@@ -6,11 +6,16 @@ import (
     "log"
     "net/http"
     "os"
+    "fmt"
+    "html"
 )
 
 func main() {
     useOS := len(os.Args) > 1 && os.Args[1] == "live"
     http.Handle("/", http.FileServer(getFileSystem(useOS)))
+    http.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
+        fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+    })
     http.ListenAndServe(":8888", nil)
 }
 
