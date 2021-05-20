@@ -8,16 +8,21 @@ function HealthChecker() {
 
     axios.get('http://localhost:8888/healthcheck')
       .then(function (response) {
-        console.log(response);
-        setCount(1)
+        sleep(2000).then((resolve, reject) => {
+            setCount(1)
+        })
       })
       .catch(function (error) {
         console.log(error);
       })
 
     return (
-        <div>HEALTH CHECKER {count}</div>
+        <div>HEALTH CHECKER {count ? "HEALTHY" : "NOT HEALTHY"}</div>
     )
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export default HealthChecker
